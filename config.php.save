@@ -1,0 +1,187 @@
+<?php  // Moodle configuration file
+
+unset($CFG);
+global $CFG;
+$CFG = new stdClass();
+
+$CFG->dbtype    = 'mariadb';
+$CFG->dblibrary = 'native';
+$CFG->dbhost    = 'localhost';
+$CFG->dbname    = 'moodle';
+$CFG->dbuser    = 'amine';
+$CFG->dbpass    = 'Moodle1#';
+$CFG->prefix    = 'mdl_';
+$CFG->dboptions = array (
+  'dbpersist' => 0,
+  'dbport' => '',
+  'dbsocket' => '',
+  'dbcollation' => 'utf8mb4_unicode_ci',
+);
+
+$CFG->wwwroot   = 'http://localhost/moodle';
+$CFG->dataroot  = '/var/www/moodledata';
+$CFG->admin     = 'admin';
+
+$CFG->directorypermissions = 0777;
+
+// There is no php closing tag in this file,
+// it is intentional because it prevents trailing whitespace problems!
+
+//=========================================================================
+// 11. BEHAT SUPPORT
+//=========================================================================
+// Behat test site needs a unique www root, data directory and database prefix:
+//
+$CFG->behat_wwwroot = 'http://127.0.0.1/moodle';
+$CFG->behat_prefix = 'bht_';
+$CFG->behat_dataroot = '/var/www/bht_moodledata';
+//
+// You can override default Moodle configuration for Behat and add your own
+// params; here you can add more profiles, use different Mink drivers than Selenium...
+// These params would be merged with the default Moodle behat.yml, giving priority
+// to the ones specified here. The array format is YAML, following the Behat
+// params hierarchy. More info: http://docs.behat.org/guides/7.config.html
+// Example:
+// $CFG->behat_config = array(
+//       'Mac-Firefox' => array(
+//           'suites' => array (
+//               'default' => array(
+//                   'filters' => array(
+//                      'tags' => '~@_file_upload'
+//                   ),
+//               ),
+//           ),
+//           'extensions' => array(
+//               'Behat\MinkExtension' => array(
+//                   'selenium2' => array(
+//                       'browser' => 'firefox',
+//                       'capabilities' => array(
+//                           'platform' => 'OS X 10.6',
+//                           'version' => 20
+//                       )
+//                   )
+//               )
+//           )
+//       ),
+//       'Mac-Safari' => array(
+//           'extensions' => array(
+//               'Behat\MinkExtension' => array(
+//                   'selenium2' => array(
+//                       'browser' => 'safari',
+//                       'capabilities' => array(
+//                           'platform' => 'OS X 10.8',
+//                           'version' => 6
+//                       )
+//                   )
+//               )
+//           )
+//       )
+//   );
+// You can also use the following config to override default Moodle configuration for Behat.
+// This config is limited to default suite and will be supported in later versions.
+// It will have precedence over $CFG->behat_config.
+    $CFG->behat_profiles = [
+        'default' => [
+            'browser' => 'chrome
+            'extensions' => [
+                'Behat\MinkExtension' => [
+                    'selenium2' => [
+                        'browser' => 'chrome',
+                    ]
+                ]
+            ]
+        ]
+    ];
+//
+// You can force the browser session (not user's sessions) to restart after N seconds. This could
+// be useful if you are using a cloud-based service with time restrictions in the browser side.
+// Setting this value the browser session that Behat is using will be restarted. Set the time in
+// seconds. Is not recommended to use this setting if you don't explicitly need it.
+// Example:
+//   $CFG->behat_restart_browser_after = 7200;     // Restarts the browser session after 2 hours
+//
+// All this page's extra Moodle settings are compared against a white list of allowed settings
+// (the basic and behat_* ones) to avoid problems with production environments. This setting can be
+// used to expand the default white list with an array of extra settings.
+// Example:
+//   $CFG->behat_extraallowedsettings = array('somecoresetting', ...);
+//
+// You should explicitly allow the usage of the deprecated behat steps, otherwise an exception will
+// be thrown when using them. The setting is disabled by default.
+// Example:
+//   $CFG->behat_usedeprecated = true;
+//
+// If you are using a slow machine, it may help to increase the timeouts that Behat uses. The
+// following example will increase timeouts by a factor of 3 (using 30 seconds instead of 10
+// seconds, for instance).
+// Example:
+//   $CFG->behat_increasetimeout = 3;
+//
+// Including feature files from directories outside the dirroot is possible if required. The setting
+// requires that the running user has executable permissions on all parent directories in the paths.
+// Example:
+//   $CFG->behat_additionalfeatures = array('/home/developer/code/wipfeatures');
+//
+// You can make behat save several dumps when a scenario fails. The dumps currently saved are:
+// * a dump of the DOM in it's state at the time of failure; and
+// * a screenshot (JavaScript is required for the screenshot functionality, so not all browsers support this option)
+// Example:
+  $CFG->behat_faildump_path = '/home/amine/Images/erreurs';
+//
+// You can make behat pause upon failure to help you diagnose and debug problems with your tests.
+//
+ $CFG->behat_pause_on_fail = true;
+//
+// You can specify db, selenium wd_host etc. for behat parallel run by setting following variable.
+// Example:
+//   $CFG->behat_parallel_run = array (
+  //     array (
+    //     'dbtype' => 'mysqli',
+      //   'dblibrary' => 'native',
+        /*  'dbhost' => 'localhost',
+          'dbname' => 'moodle',
+          'dbuser' => 'amine',
+          'dbpass' => '290392',
+          'behat_prefix' => 'mdl_',
+           'wd_host' => 'http://127.0.0.1:4444/wd/hub',
+           'behat_wwwroot' => 'http://127.0.0.1/moodle',
+          'behat_dataroot' => '/var/www/bht_moodledata'
+       ),
+  );*/
+//
+// To change name of behat parallel run site, define BEHAT_PARALLEL_SITE_NAME and parallel run sites will be suffixed
+// with this value
+// Example:
+//   define('BEHAT_PARALLEL_SITE_NAME', 'behatparallelsite');
+//
+// Command line output for parallel behat install is limited to 80 chars, if you are installing more then 4 sites and
+// want to expand output to more then 80 chars, then define BEHAT_MAX_CMD_LINE_OUTPUT
+// Example:
+//   define('BEHAT_MAX_CMD_LINE_OUTPUT', 120);
+//
+// Behat feature files will be distributed randomly between the processes by default. If you have timing file or want
+// to create timing file then define BEHAT_FEATURE_TIMING_FILE with path to timing file. It will be updated for each
+// run with latest time taken to execute feature.
+// Example:
+//   define('BEHAT_FEATURE_TIMING_FILE', '/PATH_TO_TIMING_FILE/timing.json');
+//
+// If you don't have timing file and want some stable distribution of features, then you can use step counts to
+// distribute the features. You can generate step file by executing php admin/tool/behat/cli/util.php --updatesteps
+// this will update step file which is defined by BEHAT_FEATURE_STEP_FILE.
+// Example:
+//   define('BEHAT_FEATURE_STEP_FILE', '/PATH_TO_FEATURE_STEP_COUNT_FILE/stepcount.json');
+//
+// Feature distribution for each process is displayed as histogram. you can disable it by setting
+// BEHAT_DISABLE_HISTOGRAM
+// Example:
+//   define('BEHAT_DISABLE_HISTOGRAM', true);
+//
+// Mobile app Behat testing requires this option, pointing to a developer Moodle Mobile directory:
+//   $CFG->behat_ionic_dirroot = '/where/I/keep/my/git/checkouts/moodlemobile2';
+//
+// The following option can be used to indicate a running Ionic server (otherwise Behat will start
+// one automatically for each test run, which is convenient but takes ages):
+/*   $CFG->behat_ionic_wwwroot = 'http://localhost:8100';*/
+
+require_once(__DIR__ . '/lib/setup.php');
+
